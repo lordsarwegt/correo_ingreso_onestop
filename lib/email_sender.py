@@ -17,13 +17,20 @@ class EmailSender:
         # Crear el mensaje
         msg = MIMEMultipart('alternative')
         msg['From'] = from_email
-        msg['To'] = to_email
+        if isinstance(to_email,str):
+
+            recipients = [to_email]
+
+        else:
+            recipients = to_email
+        
+        msg['To'] = ", ".join(recipients)
         msg['Subject'] = subject
 
         # Adjuntar el contenido HTML
         html_part = MIMEText(html_content, 'html','utf-8')
         msg.attach(html_part)
-
+        bandera = False
         try:
             # Conectar al servidor SMTP
             server = smtplib.SMTP(self.smtp_server, self.smtp_port)
@@ -31,13 +38,16 @@ class EmailSender:
                 server.starttls()
             server.login(self.username, self.password)
             text = msg.as_string()
-            server.sendmail(from_email, to_email, text)
+            server.sendmail(from_email, recipients, text)
             server.quit()
             print("Correo enviado exitosamente.")
+            bandera = True
         except Exception as e:
             print(f"Error al enviar el correo: {e}")
+            bandera = False
 
-
+        return bandera
+    
     def mail_template(self, title, rows = ""):
         # Renderizar la plantilla con el contexto proporcionado
        

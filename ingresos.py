@@ -37,7 +37,7 @@ class odoo_conection:
         ]
 
         fields_list = ['x_name', 'x_studio_orden_de_reparacin','x_studio_producto', 'x_studio_numero_de_serie_interna','x_studio_modelo','x_studio_paqueteria',
-                  'create_date','x_studio_stage_id','x_studio_orden_general']
+                  'x_studio_fecha_de_ingreso','x_studio_stage_id','x_studio_orden_general']
         
         fields = fields_list
 

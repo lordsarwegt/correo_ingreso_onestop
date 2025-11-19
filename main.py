@@ -10,12 +10,12 @@ def  main():
 
     ings = ing.odoo_conection()
     model = ings.start_odoo_connection()
-    ids = []
+    
     registros= ings.get_ingresos(model)
-
+    #print (registros)
     for item in registros:
         title = ""
-        ids.append(item.get('id'))
+        
         url = f"https://agiotech.odoo.com//web#id={item.get('id')}&model=x_ingreso_lb&view_type=form"
         if item.get('x_studio_orden_general'):
             title = "Ingreso de un producto ONE STOP sin prealerta."
@@ -60,13 +60,16 @@ def  main():
         
         template = sender.mail_template(title="Notificacion ONE STOP", rows=html)
 
-        sender.send_html_email(
+        correo_enviado = sender.send_html_email(
             to_email= os.getenv('MAIL_TO'),
             subject="Notificacion ONE STOP",
             html_content=template,
             from_email=os.getenv('MAIL_FROM')
         )
-    ings.write_ingreso(model,ids)    
+        
+        if correo_enviado:
+
+            ings.write_ingreso(model,item.get('id'))    
 
 if __name__ == "__main__":
     main()
