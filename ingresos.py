@@ -53,15 +53,15 @@ class odoo_conection:
         return datos
     
     def write_ingreso(self,models,ids):
-
-
-        models.execute_kw(
-            os.getenv('DB_LOC'), 
-            self.uid, 
-            os.getenv('DB_PASS'),     
-            'x_ingreso_lb', 
-            'write',
-            [[ids], {'x_studio_correo_electronico': 'ENVIADO'}])
+        
+        if ids:
+            models.execute_kw(
+                os.getenv('DB_LOC'), 
+                self.uid, 
+                os.getenv('DB_PASS'),     
+                'x_ingreso_lb', 
+                'write',
+                [ids, {'x_studio_correo_electronico': 'ENVIADO'}])
 
         #for item in datos:
         #    lista = []

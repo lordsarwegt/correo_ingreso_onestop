@@ -1,5 +1,4 @@
 import smtplib
-
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -22,7 +21,7 @@ class EmailSender:
         msg['Subject'] = subject
 
         # Adjuntar el contenido HTML
-        html_part = MIMEText(html_content, 'html')
+        html_part = MIMEText(html_content, 'html','utf-8')
         msg.attach(html_part)
 
         try:

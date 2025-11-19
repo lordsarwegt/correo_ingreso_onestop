@@ -61,12 +61,12 @@ def  main():
         template = sender.mail_template(title="Notificacion ONE STOP", rows=html)
 
         sender.send_html_email(
-            to_email="isaias.avila@agiotech.com",
+            to_email= os.getenv('MAIL_TO'),
             subject="Notificacion ONE STOP",
             html_content=template,
             from_email=os.getenv('MAIL_FROM')
         )
-        
+    ings.write_ingreso(model,ids)    
 
 if __name__ == "__main__":
     main()
