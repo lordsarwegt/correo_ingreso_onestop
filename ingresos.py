@@ -4,6 +4,7 @@ import xmlrpc.client
 from datetime import datetime
 
 
+
 class odoo_conection:
 
     def __init__(self):

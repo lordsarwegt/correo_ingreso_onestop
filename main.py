@@ -3,16 +3,18 @@ import ingresos as ing
 import os
 from datetime import datetime
 
+
 def  main():
 
+   
     from dotenv import load_dotenv
     load_dotenv()
-
     ings = ing.odoo_conection()
     model = ings.start_odoo_connection()
-    
     registros= ings.get_ingresos(model)
-    #print (registros)
+    
+
+
     for item in registros:
         title = ""
         
@@ -38,7 +40,7 @@ def  main():
                     <p><strong>SERIE:</strong> {item.get('x_studio_numero_de_serie_interna',['',''])[1] if item.get('x_studio_numero_de_serie_interna') else ''}</p>
                     <p><strong>MODELO:</strong> {item.get('x_studio_modelo',['',''])[1] if item.get('x_studio_modelo') else ''}</p>
                     <p><strong>PAQUETERIA:</strong> {item.get('x_studio_paqueteria',['',''])[1] if item.get('x_studio_paqueteria') else ''}</p>
-                    <p><strong>FECHA DE INGRESO:</strong> {item.get('create_date')}</p>
+                    <p><strong>FECHA DE INGRESO:</strong> {item.get('x_studio_fecha_de_ingreso')}</p>
                     <a href='{url}' style='background:#007BFF;
                     color:white;
                     padding:12px 20px;
@@ -67,9 +69,9 @@ def  main():
             from_email=os.getenv('MAIL_FROM')
         )
         
-        if correo_enviado:
-
-            ings.write_ingreso(model,item.get('id'))    
+        #if correo_enviado:
+#
+        #    ings.write_ingreso(model,item.get('id'))    
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,8 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import logging
+
 
 class EmailSender:
     def __init__(self, smtp_server, smtp_port, username, password, use_tls=True):
@@ -11,6 +13,14 @@ class EmailSender:
         self.use_tls = use_tls
 
     def send_html_email(self, to_email, subject, html_content, from_email=None):
+
+         # Configuración del logger
+        logging.basicConfig(
+            filename="ingreso.log",               # Archivo donde se guardará
+            level=logging.INFO,               # Nivel mínimo a registrar
+            format="%(asctime)s - %(levelname)s - %(message)s"
+        )
+
         if from_email is None:
             from_email = self.username
 
@@ -40,10 +50,10 @@ class EmailSender:
             text = msg.as_string()
             server.sendmail(from_email, recipients, text)
             server.quit()
-            print("Correo enviado exitosamente.")
+            logging.info("Correo enviado exitosamente.")
             bandera = True
         except Exception as e:
-            print(f"Error al enviar el correo: {e}")
+            logging.error(f"Error al enviar el correo: {e}")
             bandera = False
 
         return bandera
