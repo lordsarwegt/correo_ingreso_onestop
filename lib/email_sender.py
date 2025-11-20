@@ -14,12 +14,7 @@ class EmailSender:
 
     def send_html_email(self, to_email, subject, html_content, from_email=None):
 
-         # Configuración del logger
-        logging.basicConfig(
-            filename="ingreso.log",               # Archivo donde se guardará
-            level=logging.INFO,               # Nivel mínimo a registrar
-            format="%(asctime)s - %(levelname)s - %(message)s"
-        )
+        
 
         if from_email is None:
             from_email = self.username

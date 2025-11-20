@@ -2,17 +2,22 @@ import lib.email_sender as email_sender
 import ingresos as ing
 import os
 from datetime import datetime
-
+import logging
 
 def  main():
-
+     # Configuración del logger
+    logging.basicConfig(
+        filename="ingreso.log",               # Archivo donde se guardará
+        level=logging.INFO,               # Nivel mínimo a registrar
+        format="%(asctime)s - %(levelname)s - %(message)s"
+    )
    
     from dotenv import load_dotenv
     load_dotenv()
     ings = ing.odoo_conection()
     model = ings.start_odoo_connection()
     registros= ings.get_ingresos(model)
-    
+    logging.info("Se inicio correctamente.")
 
 
     for item in registros:
@@ -69,9 +74,8 @@ def  main():
             from_email=os.getenv('MAIL_FROM')
         )
         
-        #if correo_enviado:
-#
-        #    ings.write_ingreso(model,item.get('id'))    
+        if correo_enviado:          
+            ings.write_ingreso(model,item.get('id'))    
 
 if __name__ == "__main__":
     main()

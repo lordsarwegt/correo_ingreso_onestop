@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import os
 import xmlrpc.client
 from datetime import datetime
-
+import logging
 
 
 class odoo_conection:
@@ -54,15 +54,24 @@ class odoo_conection:
         return datos
     
     def write_ingreso(self,models,ids):
-        
         if ids:
-            models.execute_kw(
-                os.getenv('DB_LOC'), 
-                self.uid, 
-                os.getenv('DB_PASS'),     
-                'x_ingreso_lb', 
-                'write',
-                [ids, {'x_studio_correo_electronico': 'ENVIADO'}])
+
+            try:
+        
+                models.execute_kw(
+                    os.getenv('DB_LOC'), 
+                    self.uid, 
+                    os.getenv('DB_PASS'),     
+                    'x_ingreso_lb', 
+                    'write',
+                    [ids, {'x_studio_correo_electronico': 'ENVIADO'}])
+                
+                logging.info(f"Se cambio el status correctamente id{ids}")
+                
+            except Exception as e:
+
+                logging.error(f"Error al actualizar el status: {e}")
+
 
         #for item in datos:
         #    lista = []
