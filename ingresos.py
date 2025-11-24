@@ -32,9 +32,8 @@ class odoo_conection:
     
     def get_ingresos(self, models):
         domain =  [        
-            ['x_studio_stage_id','=',4],
-            ['x_studio_tipo_de_ingreso','=','ONE STOP'],
-            ['x_studio_correo_electronico','=','NO ENVIADO'],
+            ['id','=',892],
+           
         ]
 
         fields_list = ['x_name', 'x_studio_orden_de_reparacin','x_studio_producto', 'x_studio_numero_de_serie_interna','x_studio_modelo','x_studio_paqueteria',

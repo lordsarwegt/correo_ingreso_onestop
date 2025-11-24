@@ -3,6 +3,7 @@ import ingresos as ing
 import os
 from datetime import datetime
 import logging
+from zoneinfo import ZoneInfo  # Python 3.9+
 
 def  main():
      # Configuración del logger
@@ -22,8 +23,9 @@ def  main():
 
     for item in registros:
         title = ""
-        
         url = f"https://agiotech.odoo.com//web#id={item.get('id')}&model=x_ingreso_lb&view_type=form"
+        valor = item.get('x_studio_fecha_de_ingreso')
+        
         if item.get('x_studio_orden_general'):
             title = "Ingreso de un producto ONE STOP sin prealerta."
         else:
@@ -45,7 +47,7 @@ def  main():
                     <p><strong>SERIE:</strong> {item.get('x_studio_numero_de_serie_interna',['',''])[1] if item.get('x_studio_numero_de_serie_interna') else ''}</p>
                     <p><strong>MODELO:</strong> {item.get('x_studio_modelo',['',''])[1] if item.get('x_studio_modelo') else ''}</p>
                     <p><strong>PAQUETERIA:</strong> {item.get('x_studio_paqueteria',['',''])[1] if item.get('x_studio_paqueteria') else ''}</p>
-                    <p><strong>FECHA DE INGRESO:</strong> {item.get('x_studio_fecha_de_ingreso')}</p>
+                    <p><strong>FECHA DE INGRESO:</strong> {utc_to_cdmx(valor)}</p>
                     <a href='{url}' style='background:#007BFF;
                     color:white;
                     padding:12px 20px;
@@ -76,6 +78,13 @@ def  main():
         
         if correo_enviado:          
             ings.write_ingreso(model,item.get('id'))    
+
+
+def utc_to_cdmx(fecha_utc_str: str) -> datetime:
+    dt_utc = datetime.strptime(fecha_utc_str, "%Y-%m-%d %H:%M:%S")
+    dt_utc = dt_utc.replace(tzinfo=ZoneInfo("UTC"))
+    dt_cdmx = dt_utc.astimezone(ZoneInfo("America/Mexico_City"))
+    return dt_cdmx
 
 if __name__ == "__main__":
     main()
